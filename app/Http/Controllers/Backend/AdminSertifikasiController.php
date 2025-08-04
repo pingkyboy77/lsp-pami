@@ -204,7 +204,7 @@ class AdminSertifikasiController extends Controller
     private function getDataTablesData(Request $request)
     {
         $type = $request->get('type', 'all');
-        
+
         // Filter query based on type
         if ($type === 'parent') {
             $query = Sertifikasi::with(['children'])->whereNull('parent_id');
@@ -226,19 +226,22 @@ class AdminSertifikasiController extends Controller
 
         // Add columns based on type
         if ($type === 'parent') {
-            $dataTable->editColumn('children_count', fn($row) => $this->formatChildrenCount($row))
-                     ->addColumn('parent_action', fn($row) => $this->formatParentActions($row))
-                     ->rawColumns(['title', 'children_count', 'is_active', 'image', 'parent_action']);
+            $dataTable
+                ->editColumn('children_count', fn($row) => $this->formatChildrenCount($row))
+                ->addColumn('parent_action', fn($row) => $this->formatParentActions($row))
+                ->rawColumns(['title', 'children_count', 'is_active', 'image', 'parent_action']);
         } elseif ($type === 'child') {
-            $dataTable->editColumn('parent', fn($row) => $this->formatParent($row))
-                     ->addColumn('child_action', fn($row) => $this->formatChildActions($row))
-                     ->rawColumns(['title', 'parent', 'is_active', 'image', 'child_action']);
+            $dataTable
+                ->editColumn('parent', fn($row) => $this->formatParent($row))
+                ->addColumn('child_action', fn($row) => $this->formatChildActions($row))
+                ->rawColumns(['title', 'parent', 'is_active', 'image', 'child_action']);
         } else {
             // Default mixed view (if needed)
-            $dataTable->editColumn('parent', fn($row) => $this->formatParent($row))
-                     ->editColumn('children_count', fn($row) => $this->formatChildrenCount($row))
-                     ->addColumn('action', fn($row) => $this->formatActions($row))
-                     ->rawColumns(['title', 'parent', 'children_count', 'is_active', 'image', 'action']);
+            $dataTable
+                ->editColumn('parent', fn($row) => $this->formatParent($row))
+                ->editColumn('children_count', fn($row) => $this->formatChildrenCount($row))
+                ->addColumn('action', fn($row) => $this->formatActions($row))
+                ->rawColumns(['title', 'parent', 'children_count', 'is_active', 'image', 'action']);
         }
 
         return $dataTable->make(true);
@@ -270,20 +273,32 @@ class AdminSertifikasiController extends Controller
         $text = $row->is_active ? 'Active' : 'Inactive';
         $icon = $row->is_active ? 'fas fa-check' : 'fas fa-times';
 
-        return '<button type="button" class="btn btn-' . $class . ' btn-sm rounded-pill toggle-status" 
-                        data-id="' . $row->id . '" title="Click to toggle status">
-                    <i class="' . $icon . ' me-1"></i>' . $text . '
+        return '<button type="button" class="btn btn-' .
+            $class .
+            ' btn-sm rounded-pill toggle-status"
+                        data-id="' .
+            $row->id .
+            '" title="Click to toggle status">
+                    <i class="' .
+            $icon .
+            ' me-1"></i>' .
+            $text .
+            '
                 </button>';
     }
 
     private function formatImage($row)
     {
         if ($row->image && Storage::disk('public')->exists($row->image)) {
-            return '<img src="' . Storage::url($row->image) . '"
+            return '<img src="' .
+                Storage::url($row->image) .
+                '"
                          width="50" height="50"
                          class="rounded shadow-sm border"
                          style="object-fit: cover;"
-                         alt="' . $row->title . '">';
+                         alt="' .
+                $row->title .
+                '">';
         }
 
         return '<div class="d-flex align-items-center justify-content-center bg-light rounded border"
@@ -296,16 +311,24 @@ class AdminSertifikasiController extends Controller
     private function formatParentActions($row)
     {
         $actions = '<div class="parent-actions">';
-        
-        $actions .= '<a href="' . route('admin.sertifikasi.edit', $row->id) . '"
+
+        $actions .=
+            '<a href="' .
+            route('admin.sertifikasi.edit', $row->id) .
+            '"
                         class="btn btn-outline-warning btn-sm rounded" title="Edit">
                         <i class="fa-solid fa-pen-to-square me-1"></i>Edit
                      </a>';
 
-        $actions .= '<button type="button"
+        $actions .=
+            '<button type="button"
                         class="btn btn-outline-danger btn-sm rounded btn-delete"
-                        data-id="' . $row->id . '"
-                        data-title="' . $row->title . '"
+                        data-id="' .
+            $row->id .
+            '"
+                        data-title="' .
+            $row->title .
+            '"
                         title="Delete">
                         <i class="fas fa-trash me-1"></i>Delete
                      </button>';
@@ -319,31 +342,48 @@ class AdminSertifikasiController extends Controller
     private function formatChildActions($row)
     {
         $actions = '<div class="child-actions g-2">';
-        
-        $actions .= '<a href="' . route('admin.sertifikasi.edit', $row->id) . '"
+
+        $actions .=
+            '<a href="' .
+            route('admin.sertifikasi.edit', $row->id) .
+            '"
                         class="btn btn-outline-warning btn-sm rounded" title="Edit">
                         <i class="fas fa-edit"></i>
                      </a>';
 
-        $actions .= '<a href="' . route('admin.sertifikasi.unit-kompetensi', $row->id) . '"
+        $actions .=
+            '<a href="' .
+            route('admin.sertifikasi.unit-kompetensi', $row->id) .
+            '"
                         class="btn btn-outline-success btn-sm rounded-pill" title="Competency Unit">
                         <i class="fas fa-list"></i>
                      </a>';
 
-        $actions .= '<a href="' . route('admin.sertifikasi.persyaratan-dasar', $row->id) . '"
+        $actions .=
+            '<a href="' .
+            route('admin.sertifikasi.persyaratan-dasar', $row->id) .
+            '"
                         class="btn btn-outline-primary btn-sm rounded-pill" title="Basic Requirements">
                         <i class="fas fa-file-alt"></i>
                      </a>';
 
-        $actions .= '<a href="' . route('admin.sertifikasi.biaya-uji', $row->id) . '"
+        $actions .=
+            '<a href="' .
+            route('admin.sertifikasi.biaya-uji', $row->id) .
+            '"
                         class="btn btn-outline-info btn-sm rounded-pill" title="Test Fees">
                         <i class="fas fa-money-bill-wave"></i>
                      </a>';
 
-        $actions .= '<button type="button"
+        $actions .=
+            '<button type="button"
                         class="btn btn-outline-danger btn-sm rounded btn-delete"
-                        data-id="' . $row->id . '"
-                        data-title="' . $row->title . '"
+                        data-id="' .
+            $row->id .
+            '"
+                        data-title="' .
+            $row->title .
+            '"
                         title="Delete">
                         <i class="fas fa-trash"></i>
                      </button>';
@@ -372,7 +412,9 @@ class AdminSertifikasiController extends Controller
 
     private function getEditButton($row)
     {
-        return '<a href="' . route('admin.sertifikasi.edit', $row->id) . '"
+        return '<a href="' .
+            route('admin.sertifikasi.edit', $row->id) .
+            '"
                class="btn btn-outline-warning btn-sm rounded-pill me-1 mb-1" title="Edit">
                 <i class="fa-solid fa-pen-to-square me-1"></i>Edit
             </a>';
@@ -382,17 +424,26 @@ class AdminSertifikasiController extends Controller
     {
         $buttons = '';
 
-        $buttons .= '<a href="' . route('admin.sertifikasi.unit-kompetensi', $row->id) . '"
+        $buttons .=
+            '<a href="' .
+            route('admin.sertifikasi.unit-kompetensi', $row->id) .
+            '"
                     class="btn btn-sm btn-outline-success rounded-pill me-1 mb-1" title="Competency Unit">
                     <i class="fas fa-list-ul me-1"></i>Competency Unit
                  </a>';
 
-        $buttons .= '<a href="' . route('admin.sertifikasi.persyaratan-dasar', $row->id) . '"
+        $buttons .=
+            '<a href="' .
+            route('admin.sertifikasi.persyaratan-dasar', $row->id) .
+            '"
                     class="btn btn-sm btn-outline-primary rounded-pill me-1 mb-1" title="Basic Requirements">
                     <i class="fas fa-file-alt me-1"></i>Basic Requirements
                  </a>';
 
-        $buttons .= '<a href="' . route('admin.sertifikasi.biaya-uji', $row->id) . '"
+        $buttons .=
+            '<a href="' .
+            route('admin.sertifikasi.biaya-uji', $row->id) .
+            '"
                     class="btn btn-sm btn-outline-info rounded-pill me-1 mb-1" title="Test Fees">
                     <i class="fas fa-money-bill-wave me-1"></i>Test Fees
                  </a>';
@@ -404,8 +455,12 @@ class AdminSertifikasiController extends Controller
     {
         return '<button type="button"
                     class="btn btn-outline-danger btn-sm rounded-pill delete-btn mb-1"
-                    data-id="' . $row->id . '"
-                    data-title="' . $row->title . '"
+                    data-id="' .
+            $row->id .
+            '"
+                    data-title="' .
+            $row->title .
+            '"
                     title="Delete">
                 <i class="fa-solid fa-trash me-1"></i>Delete
             </button>';
