@@ -25,10 +25,10 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
-        "DB_CONNECTION": "mysql",
-        "DB_HOST": "4gg.h.filess.io",
-        "DB_PORT": "3306",
-        "DB_DATABASE": "db2024_stormtorn",
-        "DB_USERNAME": "db2024_stormtorn"
+        "DB_CONNECTION": "pgsql",
+        "DB_HOST": "pg-ce4adb7-lspdb.d.aivencloud.com",
+        "DB_PORT": "20659",
+        "DB_DATABASE": "defaultdb",
+        "DB_USERNAME": "avnadmin"
     }
 }
