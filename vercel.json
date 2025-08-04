@@ -4,18 +4,16 @@
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.6.0" }
     },
-    "routes": [
-        { "src": "/build/(.*)", "dest": "/public/build/" },
-        { "src": "/(.*)", "dest": "/api/index.php" }
+    "routes": [{
+        "src" : "/(.*)",
+        "dest" : "/api/index.php"
+    }
     ],
-    "public": true,
-    "buildCommand": "vite build",
-    "outputDirectory": "public",
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "false",
-        "APP_URL": "https://yourproductionurl.com",
-        "APP_KEY": "base64:TGaVaXwhWgjn9akhE4SCSIjGG/cQqvICUQ+PgLA3Bs0=",
+        "APP_DEBUG": "true",
+        "APP_URL": "",
+        "APP_KEY": "base64:Xc0ow4j5qbGo+z++O+QVg2Fmtk5CjUqPyS0WUdGZsMc=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
@@ -29,6 +27,7 @@
         "DB_HOST": "pg-ce4adb7-lspdb.d.aivencloud.com",
         "DB_PORT": "20659",
         "DB_DATABASE": "defaultdb",
-        "DB_USERNAME": "avnadmin"
+        "DB_USERNAME": "avnadmin",
+        "DB_PASSWORD": "AVNS_SMQ1ft6QXbi8tbweqyK"
     }
 }
