@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install PHP extensions yang dibutuhkan Laravel
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install \
+    && docker-php-ext-install -j$(nproc) \
     pdo_mysql \
     pdo_pgsql \
     mbstring \
@@ -27,7 +27,19 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     bcmath \
     gd \
     zip \
-    intl
+    intl \
+    ctype \
+    curl \
+    dom \
+    fileinfo \
+    filter \
+    hash \
+    openssl \
+    pcre \
+    pdo \
+    session \
+    tokenizer \
+    xml
 
 # Install Redis extension
 RUN pecl install redis && docker-php-ext-enable redis
